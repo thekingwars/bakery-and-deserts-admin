@@ -12,6 +12,13 @@ const routes: Routes = [
     canActivate: [JwtGuard],
     children: [
       {
+        path: '',
+        loadChildren: () =>
+          import('./pages/admin/dashboard/dashboard.module').then(
+            (m) => m.DashboardModule
+          ),
+      },
+      {
         path: 'admin',
         loadChildren: () =>
           import('./pages/admin/admin.module').then((m) => m.AdminModule),
@@ -29,7 +36,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, { anchorScrolling: 'enabled', useHash: true }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

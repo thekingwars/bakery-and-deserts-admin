@@ -7,13 +7,19 @@ import {
   UrlTree,
 } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
+import { User } from '../models/user';
+import { UserService } from '../services/user.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class JwtGuard implements CanActivate {
-  constructor(private router: Router, private messageService: MessageService) {}
+  constructor(
+    private router: Router,
+    private messageService: MessageService,
+    private userService: UserService
+  ) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -23,19 +29,32 @@ export class JwtGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const token = localStorage.getItem('token');
+    return this.userService.currentUser().pipe(
+      map((user: Partial<User>) => {
+        return user.role === 'admin';
+      }),
+      tap((isAdmin: boolean) => {
+        if (!isAdmin) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'No tienes autorizacion',
+            detail: 'Debes ser admin para acceder',
+          });
 
-    if (!token) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'No tienes autorizacion',
-        detail: 'Debes ser admin para acceder',
-      });
+          this.router.navigate(['login']);
+        }
+      }),
+      catchError((err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'No tienes autorizacion',
+          detail: err['error']['message'],
+        });
 
-      this.router.navigate(['login']);
-      return false;
-    }
+        this.router.navigate(['login']);
 
-    return true;
+        return of(false);
+      })
+    );
   }
 }
