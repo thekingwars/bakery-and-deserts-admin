@@ -7,7 +7,7 @@ import {
   UrlTree,
 } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { catchError, map, Observable, of, tap } from 'rxjs';
+import { catchError, map, Observable, of, tap, withLatestFrom } from 'rxjs';
 import { User } from '../models/user';
 import { UserService } from '../services/user.service';
 
@@ -33,7 +33,7 @@ export class JwtGuard implements CanActivate {
       map((user: Partial<User>) => {
         return user.role === 'admin';
       }),
-      tap((isAdmin: boolean) => {
+      tap((isAdmin) => {
         if (!isAdmin) {
           this.messageService.add({
             severity: 'error',
@@ -50,6 +50,8 @@ export class JwtGuard implements CanActivate {
           summary: 'No tienes autorizacion',
           detail: err['error']['message'],
         });
+
+        localStorage.removeItem('token');
 
         this.router.navigate(['login']);
 

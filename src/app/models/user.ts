@@ -6,3 +6,8 @@ export interface User {
   fullName: string;
   role: 'admin' | 'user';
 }
+
+export interface UserToken {
+  access_token: string;
+  user: User;
+}
