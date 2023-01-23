@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiDev: 'https://bakery-and-deserts-backend.vercel.app/api',
+  apiDev: 'http://localhost:3000/api',
 };
