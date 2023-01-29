@@ -1,0 +1,41 @@
+<p-toast></p-toast>
+
+<div class="card">
+  <form
+    class="formgrid grid"
+    [formGroup]="categoryForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="field col-12">
+      <p-fileUpload
+        #fubauto
+        mode="basic"
+        accept="image/*"
+        [maxFileSize]="2000000"
+        (onSelect)="onSelectFile($event)"
+        [auto]="true"
+        [chooseLabel]="nameImage"
+        styleClass="w-full"
+      ></p-fileUpload>
+    </div>
+    <div class="field col-12 mt-3">
+      <label class="block">Nombre de la Categoria</label>
+      <input type="text" pInputText class="w-full" formControlName="name" />
+      <small class="p-error block" *ngIf="isValidField('name')">
+        El campo es requerido
+      </small>
+    </div>
+
+    <div class="field col-12 mt-3 flex justify-content-center">
+      <button
+        [disabled]="categoryForm.invalid"
+        [loading]="isLoading$ | async"
+        pButton
+        pRipple
+        type="submit"
+        [label]="labelName"
+        class="w-7"
+      ></button>
+    </div>
+  </form>
+</div>
