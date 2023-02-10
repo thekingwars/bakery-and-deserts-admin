@@ -31,8 +31,6 @@ export class UpsertCategoryComponent implements OnInit {
     const file: File = event.currentFiles[0];
     const path: string = event.originalEvent.target.value;
 
-    console.log(event.currentFiles[0]);
-
     file['path'] = path;
 
     this.categoryForm.get('categoryImage').patchValue(file);
@@ -130,7 +128,7 @@ export class UpsertCategoryComponent implements OnInit {
 
       this.nameImage = file.name;
 
-      file['path'] = `C:\\fakepath\\${file.name}.png`;
+      file['path'] = `C:\\fakepath\\${file.name}`;
 
       this.categoryForm.patchValue(this.category);
     }

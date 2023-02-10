@@ -21,6 +21,10 @@ const routes: Routes = [
         component: CategoryComponent,
       },
       {
+        path: 'product',
+        component: ProductsComponent,
+      },
+      {
         path: '**',
         redirectTo: 'dashboard',
         pathMatch: 'full',

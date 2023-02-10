@@ -30,6 +30,10 @@ export class AppMenuComponent implements OnInit {
             label: 'Categorias',
             routerLink: ['/admin/category'],
           },
+          {
+            label: 'Productos',
+            routerLink: ['/admin/product'],
+          },
         ],
       },
     ];

@@ -1,0 +1,105 @@
+<p-toast></p-toast>
+
+<div class="card">
+  <form class="formgrid grid" [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <div class="field col-12">
+      <p-fileUpload
+        #fubauto
+        mode="basic"
+        accept="image/*"
+        [maxFileSize]="2000000"
+        (onSelect)="onSelectFile($event)"
+        [auto]="true"
+        [chooseLabel]="nameImage"
+        styleClass="w-full"
+      ></p-fileUpload>
+    </div>
+    <div class="field col-12 mt-3">
+      <label class="block">Nombre del Producto</label>
+      <input type="text" pInputText class="w-full" formControlName="name" />
+      <small class="p-error block" *ngIf="isValidField('name')">
+        El campo es requerido
+      </small>
+    </div>
+    <div class="field col-6 mt-3">
+      <label class="block">Precio</label>
+      <p-inputNumber
+        mode="currency"
+        currency="USD"
+        locale="en-US"
+        formControlName="truePrice"
+        [min]="0"
+      ></p-inputNumber>
+      <small class="p-error block" *ngIf="isValidField('truePrice')">
+        El campo es requerido
+      </small>
+    </div>
+    <div class="field col-6 mt-3">
+      <label class="block">Precio Promo</label>
+      <p-inputNumber
+        mode="currency"
+        currency="USD"
+        locale="en-US"
+        formControlName="price"
+        [min]="0"
+      ></p-inputNumber>
+      <small class="p-error block" *ngIf="isValidField('price')">
+        El campo es requerido
+      </small>
+    </div>
+
+    <div class="field col-12 mt-3">
+      <label class="block">Categorias</label>
+      <p-multiSelect
+        *ngIf="categories$ | async as categories"
+        [options]="categories"
+        optionLabel="name"
+        formControlName="categories"
+        display="chip"
+        styleClass="w-full"
+        optionValue="_id"
+        placeholder="Puedes seleccionar varias categorias"
+      ></p-multiSelect>
+
+      <small class="p-error block" *ngIf="isValidField('price')">
+        El campo es requerido
+      </small>
+    </div>
+
+    <ng-container *ngIf="productForm.get('haveStock').value">
+      <div class="field col-12 mt-3">
+        <label class="block">Stock</label>
+        <p-inputNumber
+          mode="decimal"
+          locale="en-US"
+          formControlName="stock"
+          [maxFractionDigits]="0"
+          [minFractionDigits]="0"
+          [min]="0"
+        ></p-inputNumber>
+        <small class="p-error block" *ngIf="isValidField('price')">
+          El campo es requerido
+        </small>
+      </div>
+    </ng-container>
+
+    <div class="field col-12 mt-3">
+      <h5>¿Tiene Stock?</h5>
+      <p-inputSwitch
+        (onChange)="changeSwitch($event.checked)"
+        formControlName="haveStock"
+      ></p-inputSwitch>
+    </div>
+
+    <div class="field col-12 mt-3 flex justify-content-center">
+      <button
+        [disabled]="productForm.invalid"
+        pButton
+        pRipple
+        type="submit"
+        [label]="labelName"
+        class="w-7"
+      ></button>
+    </div>
+  </form>
+</div>
